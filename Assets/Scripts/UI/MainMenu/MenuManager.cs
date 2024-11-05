@@ -32,6 +32,7 @@ namespace UI.MainMenu
             MainMenuEvents.BackBTN += OnBackBTN;
             MainMenuEvents.CreatingRoomBTN += OnCreatingRoomBTN;
             MainMenuEvents.LeaveRoomBTN += OnLeaveRoomBTN;
+            MainMenuEvents.RoomListItemBTN += OnRoomListItemBTN;
         }
 
         private void OnLeaveRoomBTN()
@@ -59,6 +60,11 @@ namespace UI.MainMenu
             SetPanelActive(_inRoomPanel);
         }
         
+        private void OnRoomListItemBTN()
+        {
+            SetPanelActive(_inRoomPanel);            
+        }
+
         protected override void UnRegisterEvents()
         {
             MainMenuEvents.FindRoomBTN -= OnFindRoomBTN;
@@ -66,6 +72,7 @@ namespace UI.MainMenu
             MainMenuEvents.BackBTN -= OnBackBTN;
             MainMenuEvents.CreatingRoomBTN -= OnCreatingRoomBTN;
             MainMenuEvents.LeaveRoomBTN -= OnLeaveRoomBTN;
+            MainMenuEvents.RoomListItemBTN -= OnRoomListItemBTN;
         }
             
     }
