@@ -1,4 +1,5 @@
 using Events;
+using Photon.Pun;
 using Utils;
 
 namespace UI.MainMenu.Buttons
@@ -8,6 +9,7 @@ namespace UI.MainMenu.Buttons
         protected override void OnClick()
         {
             MainMenuEvents.LeaveRoomBTN?.Invoke();
+            PhotonNetwork.LeaveRoom();
         }
     }
 }

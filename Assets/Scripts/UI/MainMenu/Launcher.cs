@@ -13,8 +13,11 @@ namespace UI.MainMenu
         public static Launcher Instance;
         
         [SerializeField] private TMP_Text _roomNameText;
+        [SerializeField] private TMP_Text _inRoomNameText;
         [SerializeField] private Transform _roomListContent;
         [SerializeField] private GameObject _roomListItemPrefab;
+        [SerializeField] private Transform _playerListContent;
+        [SerializeField] private GameObject _playerListItemPrefab;
         
         private string _gameVersion = "1";
 
@@ -61,6 +64,19 @@ namespace UI.MainMenu
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room");
 
             _roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+            _inRoomNameText.text = PhotonNetwork.CurrentRoom.Name;
+
+            Player[] players = PhotonNetwork.PlayerList;
+
+            foreach (Transform child in _playerListContent)
+            {
+                Destroy(child.gameObject);
+            }
+
+            foreach (var player in players)
+            {
+                Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(player);
+            }
         }
 
         public override void OnConnectedToMaster()
@@ -102,7 +118,11 @@ namespace UI.MainMenu
 
                 Instantiate(_roomListItemPrefab, _roomListContent).GetComponent<RoomListItem>().SetUp(room);
             }
-            
+        }
+
+        public override void OnPlayerEnteredRoom(Player newPlayer)
+        {
+            Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
         }
 
     }
