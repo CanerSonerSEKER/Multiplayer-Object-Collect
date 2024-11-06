@@ -3,6 +3,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 
 namespace UI.MainMenu.Buttons
@@ -10,7 +11,6 @@ namespace UI.MainMenu.Buttons
     public class CreatingRoomBTN : UIBTN
     {
         [SerializeField] private TMP_InputField _roomNameInput;
-        
         private void CreateRoom()
         {
             Debug.LogWarning("SELAMLAR ODA AÇILDI...");
@@ -22,6 +22,7 @@ namespace UI.MainMenu.Buttons
             RoomOptions roomOptions = new RoomOptions {MaxPlayers = 4};
 
             PhotonNetwork.CreateRoom(_roomNameInput.text, roomOptions);
+
         }
 
         protected override void OnClick()

@@ -4,6 +4,7 @@ using Photon.Realtime;
 using TMPro;
 using UI.MainMenu.Buttons;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace UI.MainMenu
@@ -18,6 +19,7 @@ namespace UI.MainMenu
         [SerializeField] private GameObject _roomListItemPrefab;
         [SerializeField] private Transform _playerListContent;
         [SerializeField] private GameObject _playerListItemPrefab;
+        [SerializeField] private GameObject _startGameButton;
         
         private string _gameVersion = "1";
 
@@ -77,8 +79,15 @@ namespace UI.MainMenu
             {
                 Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(player);
             }
+            
+            _startGameButton.SetActive(PhotonNetwork.IsMasterClient);
         }
 
+        public override void OnMasterClientSwitched(Player newMasterClient)
+        {
+            _startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        }
+        
         public override void OnConnectedToMaster()
         {
             Debug.Log("Pun Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");

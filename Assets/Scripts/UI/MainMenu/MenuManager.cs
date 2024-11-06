@@ -1,5 +1,6 @@
 using System;
 using Events;
+using Photon.Pun;
 using UnityEngine;
 using Utils;
 
@@ -33,6 +34,7 @@ namespace UI.MainMenu
             MainMenuEvents.CreatingRoomBTN += OnCreatingRoomBTN;
             MainMenuEvents.LeaveRoomBTN += OnLeaveRoomBTN;
             MainMenuEvents.RoomListItemBTN += OnRoomListItemBTN;
+            MainMenuEvents.StartGameBTN += OnStartGameBTN;
         }
 
         private void OnLeaveRoomBTN()
@@ -64,6 +66,11 @@ namespace UI.MainMenu
         {
             SetPanelActive(_inRoomPanel);            
         }
+        
+        private void OnStartGameBTN()
+        {
+            PhotonNetwork.LoadLevel(1);
+        }
 
         protected override void UnRegisterEvents()
         {
@@ -73,6 +80,7 @@ namespace UI.MainMenu
             MainMenuEvents.CreatingRoomBTN -= OnCreatingRoomBTN;
             MainMenuEvents.LeaveRoomBTN -= OnLeaveRoomBTN;
             MainMenuEvents.RoomListItemBTN -= OnRoomListItemBTN;
+            MainMenuEvents.StartGameBTN -= OnStartGameBTN;
         }
             
     }

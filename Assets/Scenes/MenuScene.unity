@@ -728,6 +728,7 @@ MonoBehaviour:
   _roomListItemPrefab: {fileID: 7824328399903475728, guid: 23f922b30c3c52a4ca47715f18fd1d20, type: 3}
   _playerListContent: {fileID: 1468172285}
   _playerListItemPrefab: {fileID: 4427282959621688032, guid: d84a6f2d3e4f74847847ca89f6c9dec3, type: 3}
+  _startGameButton: {fileID: 1572887988}
 --- !u!114 &534084038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2704,6 +2705,7 @@ GameObject:
   - component: {fileID: 1572887992}
   - component: {fileID: 1572887991}
   - component: {fileID: 1572887990}
+  - component: {fileID: 1572887993}
   m_Layer: 5
   m_Name: StartGameBTN
   m_TagString: Untagged
@@ -2813,6 +2815,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1572887988}
   m_CullTransparentMesh: 1
+--- !u!114 &1572887993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572887988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf003d96c96c4403b4c4eed3f92c3c82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 1572887990}
 --- !u!1 &1608245143
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,5 +10,6 @@ namespace Events
         public static UnityAction BackBTN;
         public static UnityAction LeaveRoomBTN;
         public static UnityAction RoomListItemBTN;
+        public static UnityAction StartGameBTN;
     }
 }
