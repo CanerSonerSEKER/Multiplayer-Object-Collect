@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Numerics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.TextCore.Text;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
@@ -11,7 +12,6 @@ namespace Game.PlayersScripts
 {
     public class PlayerController : MonoBehaviour
     {
-        
         public bool CanMove { get; private set; } = true;
         private bool IsSprinting => _canSprint && Input.GetKey(_sprintKey);
         private bool ShouldJump => Input.GetKeyDown(_jumpKey) && _characterController.isGrounded;
@@ -60,12 +60,11 @@ namespace Game.PlayersScripts
         [SerializeField] private float _sprintRobotAmount = 0.11f;
         [SerializeField] private float _crouchRobotSpeed = 8f;
         [SerializeField] private float _crouchRobotAmount = 0.025f;
-        private float _defaultYPos;
         private float _timer;
-
-        [SerializeField] private Camera _playerCamera;
+        
+        [SerializeField] private Transform _playerTransform;
         private CharacterController _characterController;
-
+        
         private Vector3 _moveDirection;
         private Vector2 _currentInput;
 
@@ -74,7 +73,6 @@ namespace Game.PlayersScripts
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
-            _defaultYPos = _playerCamera.transform.localPosition.y;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
@@ -84,7 +82,7 @@ namespace Game.PlayersScripts
             if (CanMove)
             {
                 HandleMovementInput();
-                // HandleMouseLook();
+                //SmoothCameraFollow();
 
                 if (_canJump)
                 {
@@ -95,14 +93,8 @@ namespace Game.PlayersScripts
                 {
                     HandleCrouch();
                 }
-                
-                if (_canUseHeadBob)
-                {
-                    HandleHeadRobot();
-                }
 
                 ApplyFinalMovements();
-
 
             }
             
@@ -124,13 +116,22 @@ namespace Game.PlayersScripts
             _moveDirection.y = moveDirectionY;
         }
         
-        private void HandleMouseLook()
+        /*private void SmoothCameraFollow()
         {
+            if (_playerTransform == false) return;
+
+            Vector3 offSetVect = Vector3.back * _offSet;
+            Quaternion angleAxis = Quaternion.AngleAxis(_panAngle, Vector3.right);
+            Vector3 rotatedVect = angleAxis * offSetVect;
+
             _rotationX -= Input.GetAxis("Mouse Y") * _lookSpeedY;
             _rotationX = Mathf.Clamp(_rotationX, -_lookAngleUp, _lookAngleDown);
-            _playerCamera.transform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
+            _cameraTransform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * _lookSpeedX, 0);
-        }
+
+            _cameraTransform.position = _playerTransform.position + rotatedVect;
+
+        }*/
         
         private void HandleJump()
         {
@@ -148,32 +149,13 @@ namespace Game.PlayersScripts
             }
         }
 
-        private void HandleHeadRobot()
-        {
-            if (!_characterController.isGrounded) return;
-
-            if (Mathf.Abs(_moveDirection.x) > 0.1f || Mathf.Abs(_moveDirection.z) > 0.1f)
-            {
-                _timer += Time.deltaTime *
-                          (_isCrouching ? _crouchRobotSpeed : IsSprinting ? _sprintRobotSpeed : _walkRobotSpeed);
-
-                _playerCamera.transform.localPosition = new Vector3
-                (
-                    _playerCamera.transform.localPosition.x,
-                    _defaultYPos + Mathf.Sin(_timer) * (_isCrouching ? _crouchRobotAmount :
-                        IsSprinting ? _sprintRobotAmount : _walkRobotAmount),
-                    _playerCamera.transform.localPosition.z
-                );
-            }
-        }
-        
         private IEnumerator CrouchStand()
         {
-            if (_isCrouching && Physics.Raycast(_playerCamera.transform.position, Vector3.up, 1f))
+            if (_isCrouching && Physics.Raycast(_playerTransform.transform.position, Vector3.up, 1f))
             {
                 yield break;
             }
-
+            
             _duringCrouchAnimation = true;
 
             float timeElapsed = 0;
@@ -207,13 +189,6 @@ namespace Game.PlayersScripts
             if (!_characterController.isGrounded) _moveDirection.y -= _jumpGravity * Time.deltaTime;
             _characterController.Move(_moveDirection * Time.deltaTime);
         }
-        
-
-        
-
-        
-        
-        
         
     }
 }
