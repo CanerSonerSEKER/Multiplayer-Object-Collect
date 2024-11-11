@@ -1,10 +1,5 @@
-using System;
 using System.Collections;
-using System.Numerics;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.TextCore.Text;
-using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -82,7 +77,6 @@ namespace Game.PlayersScripts
             if (CanMove)
             {
                 HandleMovementInput();
-                //SmoothCameraFollow();
 
                 if (_canJump)
                 {
@@ -115,23 +109,6 @@ namespace Game.PlayersScripts
                              (transform.TransformDirection(Vector3.right) * _currentInput.y);
             _moveDirection.y = moveDirectionY;
         }
-        
-        /*private void SmoothCameraFollow()
-        {
-            if (_playerTransform == false) return;
-
-            Vector3 offSetVect = Vector3.back * _offSet;
-            Quaternion angleAxis = Quaternion.AngleAxis(_panAngle, Vector3.right);
-            Vector3 rotatedVect = angleAxis * offSetVect;
-
-            _rotationX -= Input.GetAxis("Mouse Y") * _lookSpeedY;
-            _rotationX = Mathf.Clamp(_rotationX, -_lookAngleUp, _lookAngleDown);
-            _cameraTransform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * _lookSpeedX, 0);
-
-            _cameraTransform.position = _playerTransform.position + rotatedVect;
-
-        }*/
         
         private void HandleJump()
         {
