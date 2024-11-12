@@ -7,6 +7,7 @@ namespace Game.PlayersScripts
     public class PlayerCam : MonoBehaviour
     {
         [SerializeField] private Transform _playerTransform;
+        [SerializeField] private Transform _playerCamTransform;
 
         private Vector3 _cameraFollowVelocity = Vector3.zero;
         private float _cameraFollowSpeed = 0.2f;
@@ -19,11 +20,6 @@ namespace Game.PlayersScripts
         private float _minimumPivotAngle = -35f;
         private float _maximumPivotAngle = 35f;
 
-        private void Awake()
-        {
-        }
-
-
         private void LateUpdate()
         {
             FollowTarget();            
@@ -32,7 +28,7 @@ namespace Game.PlayersScripts
 
         private void FollowTarget()
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _playerTransform.position,
+            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _playerCamTransform.position,
                 ref _cameraFollowVelocity, _cameraFollowSpeed);
 
             transform.position = targetPosition;
