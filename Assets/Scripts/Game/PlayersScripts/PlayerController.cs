@@ -1,4 +1,6 @@
 using System.Collections;
+using Photon.Chat.Demo;
+using Unity.VisualScripting;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -9,6 +11,7 @@ namespace Game.PlayersScripts
     {
         public bool CanMove { get; private set; } = true;
         private bool IsSprinting => _canSprint && Input.GetKey(_sprintKey);
+        private bool IsCrouching => _canCrouch && Input.GetKey(_crouchKey);
         private bool ShouldJump => Input.GetKeyDown(_jumpKey) && _characterController.isGrounded;
         private bool ShouldCrouch => Input.GetKeyDown(_crouchKey) && !_duringCrouchAnimation && _characterController.isGrounded;
     
@@ -18,6 +21,7 @@ namespace Game.PlayersScripts
         [SerializeField] private bool _canJump = true;
         [SerializeField] private bool _canCrouch = true;
         [SerializeField] private bool _canUseHeadBob = true;
+        [SerializeField] private bool _canWalk = true;
 
         [Header("Controls")] 
         private KeyCode _sprintKey = KeyCode.LeftShift;
@@ -56,6 +60,13 @@ namespace Game.PlayersScripts
         [SerializeField] private float _crouchRobotSpeed = 8f;
         [SerializeField] private float _crouchRobotAmount = 0.025f;
         private float _timer;
+
+        [Header("Animation Values")] 
+        [SerializeField] private Animator _animator;
+        private float _currentSpeed;
+        private float _idleSpeed = 0f;
+        private float _walkingSpeed = 8f;
+        private float _runSpeed = 12f;
         
         [SerializeField] private Transform _playerTransform;
         private CharacterController _characterController;
@@ -77,6 +88,7 @@ namespace Game.PlayersScripts
             if (CanMove)
             {
                 HandleMovementInput();
+                HandleAnimationMovement();
 
                 if (_canJump)
                 {
@@ -94,6 +106,36 @@ namespace Game.PlayersScripts
             
         }
 
+        private void HandleAnimationMovement()
+        {
+             //float move = Input.GetAxis("Vertical");
+             //_animator.SetFloat("Speed", move);
+
+             
+             
+             /*
+             if (CanMove)
+             {
+                _currentSpeed = Mathf.Lerp(_currentSpeed, _walkingSpeed, 1f);
+
+                if (IsSprinting)
+                {
+                    _currentSpeed = Mathf.Lerp(_currentSpeed, _runSpeed, 1f);
+                }
+
+                if (IsCrouching)
+                {
+                    _currentSpeed = 3f;
+                }
+             }
+             else
+             {
+                 CanMove = false;
+                 _currentSpeed = _idleSpeed;
+             }
+         */
+        }
+
         private void HandleMovementInput()
         {
             _currentInput =
@@ -107,6 +149,7 @@ namespace Game.PlayersScripts
             float moveDirectionY = _moveDirection.y;
             _moveDirection = (transform.TransformDirection(Vector3.forward) * _currentInput.x) +
                              (transform.TransformDirection(Vector3.right) * _currentInput.y);
+            
             _moveDirection.y = moveDirectionY;
         }
         

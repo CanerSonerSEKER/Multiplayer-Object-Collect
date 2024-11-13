@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4d01eed335e643e469e185a94e97f395
+guid: 662b6735dfff04e469c4744f6121e89a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: FastRun
+      name: Walk Left
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 23
+      lastFrame: 64
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

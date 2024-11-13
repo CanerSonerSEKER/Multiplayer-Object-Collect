@@ -305,6 +305,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4214863996525746071}
   m_SourcePrefab: {fileID: 100100000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
+--- !u!95 &6962554866421927672 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9500000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
+  m_PrefabInstance: {fileID: 6962554866429328280}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6962554866428928280 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
@@ -362,6 +367,7 @@ MonoBehaviour:
   _canJump: 1
   _canCrouch: 1
   _canUseHeadBob: 1
+  _canWalk: 1
   _walkSpeed: 3
   _sprintSpeed: 6
   _crouchSpeed: 1
@@ -382,4 +388,5 @@ MonoBehaviour:
   _sprintRobotAmount: 0.11
   _crouchRobotSpeed: 8
   _crouchRobotAmount: 0.025
+  _animator: {fileID: 6962554866421927672}
   _playerTransform: {fileID: 6962554866428928380}
