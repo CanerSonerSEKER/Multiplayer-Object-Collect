@@ -369,7 +369,7 @@ MonoBehaviour:
   _canUseHeadBob: 1
   _canWalk: 1
   _walkSpeed: 3
-  _sprintSpeed: 6
+  _sprintSpeed: 7
   _crouchSpeed: 1
   _lookSpeedX: 2
   _lookSpeedY: 2
@@ -390,3 +390,4 @@ MonoBehaviour:
   _crouchRobotAmount: 0.025
   _animator: {fileID: 6962554866421927672}
   _playerTransform: {fileID: 6962554866428928380}
+  _characterController: {fileID: 5780215485247449908}

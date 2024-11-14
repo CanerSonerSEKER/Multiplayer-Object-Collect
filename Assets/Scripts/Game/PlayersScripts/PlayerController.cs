@@ -1,6 +1,3 @@
-using System.Collections;
-using Photon.Chat.Demo;
-using Unity.VisualScripting;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -13,7 +10,7 @@ namespace Game.PlayersScripts
         private bool IsSprinting => _canSprint && Input.GetKey(_sprintKey);
         private bool IsCrouching => _canCrouch && Input.GetKey(_crouchKey);
         private bool ShouldJump => Input.GetKeyDown(_jumpKey) && _characterController.isGrounded;
-        private bool ShouldCrouch => Input.GetKeyDown(_crouchKey) && !_duringCrouchAnimation && _characterController.isGrounded;
+        private bool ShouldCrouch => Input.GetKey(_crouchKey) /*&& !_duringCrouchAnimation*/ && _characterController.isGrounded;
     
 
         [Header("Functional Options")] 
@@ -63,13 +60,9 @@ namespace Game.PlayersScripts
 
         [Header("Animation Values")] 
         [SerializeField] private Animator _animator;
-        private float _currentSpeed;
-        private float _idleSpeed = 0f;
-        private float _walkingSpeed = 8f;
-        private float _runSpeed = 12f;
         
         [SerializeField] private Transform _playerTransform;
-        private CharacterController _characterController;
+        [SerializeField] CharacterController _characterController;
         
         private Vector3 _moveDirection;
         private Vector2 _currentInput;
@@ -78,7 +71,6 @@ namespace Game.PlayersScripts
 
         private void Awake()
         {
-            _characterController = GetComponent<CharacterController>();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
@@ -88,13 +80,12 @@ namespace Game.PlayersScripts
             if (CanMove)
             {
                 HandleMovementInput();
-                HandleAnimationMovement();
 
                 if (_canJump)
                 {
                     HandleJump();
                 }
-
+                
                 if (_canCrouch)
                 {
                     HandleCrouch();
@@ -105,37 +96,6 @@ namespace Game.PlayersScripts
             }
             
         }
-
-        private void HandleAnimationMovement()
-        {
-             //float move = Input.GetAxis("Vertical");
-             //_animator.SetFloat("Speed", move);
-
-             
-             
-             /*
-             if (CanMove)
-             {
-                _currentSpeed = Mathf.Lerp(_currentSpeed, _walkingSpeed, 1f);
-
-                if (IsSprinting)
-                {
-                    _currentSpeed = Mathf.Lerp(_currentSpeed, _runSpeed, 1f);
-                }
-
-                if (IsCrouching)
-                {
-                    _currentSpeed = 3f;
-                }
-             }
-             else
-             {
-                 CanMove = false;
-                 _currentSpeed = _idleSpeed;
-             }
-         */
-        }
-
         private void HandleMovementInput()
         {
             _currentInput =
@@ -145,7 +105,8 @@ namespace Game.PlayersScripts
                     (IsSprinting ? _sprintSpeed : _isCrouching ? _crouchSpeed : _walkSpeed) *
                     Input.GetAxis("Horizontal")
                 );
-
+            
+            _animator.SetFloat("Vertical", _currentInput.x);
             float moveDirectionY = _moveDirection.y;
             _moveDirection = (transform.TransformDirection(Vector3.forward) * _currentInput.x) +
                              (transform.TransformDirection(Vector3.right) * _currentInput.y);
@@ -165,26 +126,69 @@ namespace Game.PlayersScripts
         {
             if (ShouldCrouch)
             {
-                StartCoroutine(CrouchStand());
+                //StartCoroutine(CrouchStand());
+                CrouchMove();
             }
         }
 
-        private IEnumerator CrouchStand()
+        private void CrouchMove()
         {
-            if (_isCrouching && Physics.Raycast(_playerTransform.transform.position, Vector3.up, 1f))
+            /*
+            if (Input.GetKey(KeyCode.LeftControl))
             {
-                yield break;
+                _animator.SetBool("isCrouching", true);
+            }
+            else
+            {
+                _animator.SetBool("isCrouching", false);
+                _isCrouching = !_isCrouching;
+            }
+        */
+            if (IsCrouching)
+            {
+                _animator.SetBool("IsCrouching", true);
+                _canSprint = !_canSprint;
+                _canJump = !_canJump;
+            }
+            else
+            {
+                _animator.SetBool("IsCrouching", false);
+                _canSprint = true;
+                _canJump = true;
             }
             
-            _duringCrouchAnimation = true;
+        }
 
-            float timeElapsed = 0;
+        /*private IEnumerator CrouchStand()
+        {
+            /*if (_isCrouching && Physics.Raycast(_playerTransform.transform.position, Vector3.up, 1f))
+            {
+                yield break;
+            }#1#
+
+            /*if (Input.GetKey(KeyCode.LeftControl))
+            {
+                _animator.SetBool("isCrouching", true);
+                _isCrouching = !_isCrouching;
+                _canJump = !_canJump;
+                _canSprint = !_canSprint;
+            }
+            else
+            {
+                _animator.SetBool("isCrouching", false);
+            }#1#
+            
+            //_duringCrouchAnimation = true;
+            
+
+            /*float timeElapsed = 0;
             float targetHeight = _isCrouching ? _standingHeight : _crouchHeight;
             float currentHeight = _characterController.height;
 
             Vector3 targetCenter = _isCrouching ? _crouchCenter : _standingCenter;
-            Vector3 currentCenter = _characterController.center;
+            Vector3 currentCenter = _characterController.center;#1#
 
+            /*
             while (timeElapsed < _crouchTime)
             {
                 _characterController.height = Mathf.Lerp(currentHeight, targetHeight, timeElapsed / _crouchTime);
@@ -192,17 +196,21 @@ namespace Game.PlayersScripts
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
+            #1#
 
-            _characterController.height = targetHeight;
-            _characterController.center = targetCenter;
+            /*_characterController.height = targetHeight;
+            _characterController.center = targetCenter;#1#
 
-            _isCrouching = !_isCrouching;
+            //_isCrouching = !_isCrouching;
 
-            _duringCrouchAnimation = false;
-            _canJump = !_canJump;
-            _canSprint = !_canSprint;
+            //_duringCrouchAnimation = false;
+            //_animator.SetBool("isCrouching", false);
+            //_canJump = !_canJump;
+            //_canSprint = !_canSprint;
             
-        }
+            //yield break;
+
+        }*/
         
         private void ApplyFinalMovements()
         {
