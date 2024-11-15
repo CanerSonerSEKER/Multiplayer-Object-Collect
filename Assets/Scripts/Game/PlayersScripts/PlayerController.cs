@@ -8,7 +8,6 @@ namespace Game.PlayersScripts
     {
         public bool CanMove { get; private set; } = true;
         private bool IsSprinting => _canSprint && Input.GetKey(_sprintKey);
-        private bool IsCrouching => _canCrouch && Input.GetKey(_crouchKey);
         private bool ShouldJump => Input.GetKeyDown(_jumpKey) && _characterController.isGrounded;
         private bool ShouldCrouch => Input.GetKey(_crouchKey) /*&& !_duringCrouchAnimation*/ && _characterController.isGrounded;
     
@@ -41,11 +40,6 @@ namespace Game.PlayersScripts
         [SerializeField] private float _jumpGravity = 30.0f;
 
         [Header("Crouch Parameters")] 
-        [SerializeField] private float _crouchHeight = 0.5f;
-        [SerializeField] private float _standingHeight = 2.0f;
-        [SerializeField] private float _crouchTime = 0.25f;
-        [SerializeField] private Vector3 _crouchCenter = new Vector3(0f, 0.5f, 0f);
-        [SerializeField] private Vector3 _standingCenter = new Vector3(0f, 0f, 0f);
         private bool _isCrouching;
         private bool _duringCrouchAnimation;
 
@@ -127,28 +121,9 @@ namespace Game.PlayersScripts
             if (ShouldCrouch)
             {
                 //StartCoroutine(CrouchStand());
-                CrouchMove();
-            }
-        }
-
-        private void CrouchMove()
-        {
-            /*
-            if (Input.GetKey(KeyCode.LeftControl))
-            {
-                _animator.SetBool("isCrouching", true);
-            }
-            else
-            {
-                _animator.SetBool("isCrouching", false);
-                _isCrouching = !_isCrouching;
-            }
-        */
-            if (IsCrouching)
-            {
                 _animator.SetBool("IsCrouching", true);
-                _canSprint = !_canSprint;
-                _canJump = !_canJump;
+                _canSprint = false;
+                _canJump = false;
             }
             else
             {
@@ -156,61 +131,8 @@ namespace Game.PlayersScripts
                 _canSprint = true;
                 _canJump = true;
             }
-            
+
         }
-
-        /*private IEnumerator CrouchStand()
-        {
-            /*if (_isCrouching && Physics.Raycast(_playerTransform.transform.position, Vector3.up, 1f))
-            {
-                yield break;
-            }#1#
-
-            /*if (Input.GetKey(KeyCode.LeftControl))
-            {
-                _animator.SetBool("isCrouching", true);
-                _isCrouching = !_isCrouching;
-                _canJump = !_canJump;
-                _canSprint = !_canSprint;
-            }
-            else
-            {
-                _animator.SetBool("isCrouching", false);
-            }#1#
-            
-            //_duringCrouchAnimation = true;
-            
-
-            /*float timeElapsed = 0;
-            float targetHeight = _isCrouching ? _standingHeight : _crouchHeight;
-            float currentHeight = _characterController.height;
-
-            Vector3 targetCenter = _isCrouching ? _crouchCenter : _standingCenter;
-            Vector3 currentCenter = _characterController.center;#1#
-
-            /*
-            while (timeElapsed < _crouchTime)
-            {
-                _characterController.height = Mathf.Lerp(currentHeight, targetHeight, timeElapsed / _crouchTime);
-                _characterController.center = Vector3.Lerp(currentCenter, targetCenter, timeElapsed / _crouchTime);
-                timeElapsed += Time.deltaTime;
-                yield return null;
-            }
-            #1#
-
-            /*_characterController.height = targetHeight;
-            _characterController.center = targetCenter;#1#
-
-            //_isCrouching = !_isCrouching;
-
-            //_duringCrouchAnimation = false;
-            //_animator.SetBool("isCrouching", false);
-            //_canJump = !_canJump;
-            //_canSprint = !_canSprint;
-            
-            //yield break;
-
-        }*/
         
         private void ApplyFinalMovements()
         {
