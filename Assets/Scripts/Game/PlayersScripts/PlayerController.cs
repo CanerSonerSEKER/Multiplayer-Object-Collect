@@ -101,6 +101,7 @@ namespace Game.PlayersScripts
                 );
             
             _animator.SetFloat("Vertical", _currentInput.x);
+            _animator.SetFloat("Horizontal", _currentInput.y);
             float moveDirectionY = _moveDirection.y;
             _moveDirection = (transform.TransformDirection(Vector3.forward) * _currentInput.x) +
                              (transform.TransformDirection(Vector3.right) * _currentInput.y);

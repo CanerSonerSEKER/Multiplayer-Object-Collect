@@ -291,6 +291,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 1281f4f6f2a71444380cd233c2e2f8ee, type: 2}
+    - target: {fileID: 9500000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -370,18 +374,13 @@ MonoBehaviour:
   _canWalk: 1
   _walkSpeed: 3
   _sprintSpeed: 7
-  _crouchSpeed: 1
+  _crouchSpeed: 0.25
   _lookSpeedX: 2
   _lookSpeedY: 2
   _lookAngleUp: 80
   _lookAngleDown: 80
   _jumpForce: 8
   _jumpGravity: 30
-  _crouchHeight: 0.5
-  _standingHeight: 2
-  _crouchTime: 0.25
-  _crouchCenter: {x: 0, y: 0.5, z: 0}
-  _standingCenter: {x: 0, y: 0, z: 0}
   _walkRobotSpeed: 14
   _walkRobotAmount: 0.05
   _sprintRobotSpeed: 18

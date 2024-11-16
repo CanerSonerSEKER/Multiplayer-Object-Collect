@@ -307,12 +307,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4214863996525746071, guid: e52ba8f00546a024e889ba15fa817d80, type: 3}
-      propertyPath: _crouchSpeed
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 6962554866421927672, guid: e52ba8f00546a024e889ba15fa817d80, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6962554866428928280, guid: e52ba8f00546a024e889ba15fa817d80, type: 3}
       propertyPath: m_LocalPosition.x
