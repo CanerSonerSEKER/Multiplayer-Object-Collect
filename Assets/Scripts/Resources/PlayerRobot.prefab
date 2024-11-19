@@ -349,7 +349,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -370,17 +370,15 @@ MonoBehaviour:
   _canSprint: 1
   _canJump: 1
   _canCrouch: 1
-  _canUseHeadBob: 1
-  _canWalk: 1
   _walkSpeed: 3
   _sprintSpeed: 7
   _crouchSpeed: 0.25
   _lookSpeedX: 2
   _lookSpeedY: 2
-  _lookAngleUp: 80
-  _lookAngleDown: 80
   _jumpForce: 8
   _jumpGravity: 30
+  _jumpTimeCounter: 5
+  _jumpTime: 0
   _walkRobotSpeed: 14
   _walkRobotAmount: 0.05
   _sprintRobotSpeed: 18

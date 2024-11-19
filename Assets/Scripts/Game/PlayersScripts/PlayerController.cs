@@ -1,3 +1,6 @@
+using System.Collections;
+using Photon.Chat.Demo;
+using Unity.VisualScripting;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -16,8 +19,6 @@ namespace Game.PlayersScripts
         [SerializeField] private bool _canSprint = true;
         [SerializeField] private bool _canJump = true;
         [SerializeField] private bool _canCrouch = true;
-        [SerializeField] private bool _canUseHeadBob = true;
-        [SerializeField] private bool _canWalk = true;
 
         [Header("Controls")] 
         private KeyCode _sprintKey = KeyCode.LeftShift;
@@ -32,12 +33,13 @@ namespace Game.PlayersScripts
         [Header("Look Parameters")] 
         [SerializeField, Range(1, 10)] private float _lookSpeedX = 2.0f;
         [SerializeField, Range(1, 10)] private float _lookSpeedY = 2.0f;
-        [SerializeField, Range(1, 100)] private float _lookAngleUp = 80.0f;
-        [SerializeField, Range(1, 100)] private float _lookAngleDown = 80.0f;
 
         [Header("Jumping Parameters")] 
         [SerializeField] private float _jumpForce = 8.0f;
         [SerializeField] private float _jumpGravity = 30.0f;
+        [SerializeField] private float _jumpTimeCounter = 5.0f;
+        private bool _isJumping;
+        private bool _isGrounded;
 
         [Header("Crouch Parameters")] 
         private bool _isCrouching;
@@ -113,26 +115,41 @@ namespace Game.PlayersScripts
         {
             if (ShouldJump)
             {
-                _moveDirection.y = _jumpForce;
+                if (_jumpTimeCounter > 0 )
+                {
+                    _animator.SetBool("IsJumping", true);
+                    _moveDirection.y = _jumpForce;
+
+                    _jumpTimeCounter -= Time.deltaTime;
+                    Debug.LogWarning($"Time: {_jumpTimeCounter}");
+                }
+                else
+                {
+                    _animator.SetBool("IsJumping", false);
+                }
             }
+            /*else  
+            {
+                _animator.SetBool("IsJumping", false);
+            }*/
         }
+
         
+
         private void HandleCrouch()
         {
-            if (ShouldCrouch)
-            {
-                //StartCoroutine(CrouchStand());
-                _animator.SetBool("IsCrouching", true);
-                _canSprint = false;
-                _canJump = false;
-            }
-            else
-            {
-                _animator.SetBool("IsCrouching", false);
-                _canSprint = true;
-                _canJump = true;
-            }
-
+                if (ShouldCrouch)
+                {
+                    _animator.SetBool("IsCrouching", true);
+                    _canSprint = false;
+                    _canJump = false;
+                }
+                else
+                {
+                    _animator.SetBool("IsCrouching", false);
+                    _canSprint = true;
+                    _canJump = true;
+                }
         }
         
         private void ApplyFinalMovements()
