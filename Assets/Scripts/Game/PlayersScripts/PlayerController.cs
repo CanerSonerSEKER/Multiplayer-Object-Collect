@@ -1,6 +1,5 @@
-using System.Collections;
-using Photon.Chat.Demo;
-using Unity.VisualScripting;
+using System;
+using Photon.Pun;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -10,9 +9,16 @@ namespace Game.PlayersScripts
     public class PlayerController : MonoBehaviour
     {
         public bool CanMove { get; private set; } = true;
+        
+        [SerializeField] private Transform _playerTransform;
+        [SerializeField] private CharacterController _characterController;
+        [SerializeField] private PhotonView _photonView;
+        
+        private Vector3 _moveDirection;
+        private Vector2 _currentInput;
+        
         private bool IsSprinting => _canSprint && Input.GetKey(_sprintKey);
-        private bool ShouldJump => Input.GetKeyDown(_jumpKey) && _characterController.isGrounded;
-        private bool ShouldCrouch => Input.GetKey(_crouchKey) /*&& !_duringCrouchAnimation*/ && _characterController.isGrounded;
+        private bool ShouldCrouch => Input.GetKey(_crouchKey) && _characterController.isGrounded;
     
 
         [Header("Functional Options")] 
@@ -22,7 +28,6 @@ namespace Game.PlayersScripts
 
         [Header("Controls")] 
         private KeyCode _sprintKey = KeyCode.LeftShift;
-        private KeyCode _jumpKey = KeyCode.Space;
         private KeyCode _crouchKey = KeyCode.LeftControl;
 
         [Header("Movement Parameters")] 
@@ -30,41 +35,23 @@ namespace Game.PlayersScripts
         [SerializeField] private float _sprintSpeed;
         [SerializeField] private float _crouchSpeed;
 
-        [Header("Look Parameters")] 
-        [SerializeField, Range(1, 10)] private float _lookSpeedX = 2.0f;
-        [SerializeField, Range(1, 10)] private float _lookSpeedY = 2.0f;
-
         [Header("Jumping Parameters")] 
-        [SerializeField] private float _jumpForce = 8.0f;
+        [SerializeField] private float _jumpForce = 15.0f;
         [SerializeField] private float _jumpGravity = 30.0f;
-        [SerializeField] private float _jumpTimeCounter = 5.0f;
+        [SerializeField] private float _jumpButtonGracePeriod;
+        private float _ySpeed;
+        private float _originalStepOffSet;
+        private float _lastGroundedTime;
+        private float _jumpButtonPressedTime;
         private bool _isJumping;
         private bool _isGrounded;
 
         [Header("Crouch Parameters")] 
         private bool _isCrouching;
-        private bool _duringCrouchAnimation;
-
-        [Header("Head Parameters")] 
-        [SerializeField] private float _walkRobotSpeed = 14f;
-        [SerializeField] private float _walkRobotAmount = 0.05f;
-        [SerializeField] private float _sprintRobotSpeed = 18f;
-        [SerializeField] private float _sprintRobotAmount = 0.11f;
-        [SerializeField] private float _crouchRobotSpeed = 8f;
-        [SerializeField] private float _crouchRobotAmount = 0.025f;
-        private float _timer;
 
         [Header("Animation Values")] 
         [SerializeField] private Animator _animator;
         
-        [SerializeField] private Transform _playerTransform;
-        [SerializeField] CharacterController _characterController;
-        
-        private Vector3 _moveDirection;
-        private Vector2 _currentInput;
-
-        private float _rotationX = 0;
-
         private void Awake()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -90,7 +77,6 @@ namespace Game.PlayersScripts
                 ApplyFinalMovements();
 
             }
-            
         }
         private void HandleMovementInput()
         {
@@ -110,31 +96,51 @@ namespace Game.PlayersScripts
             
             _moveDirection.y = moveDirectionY;
         }
-        
+
         private void HandleJump()
         {
-            if (ShouldJump)
+            _ySpeed += Physics.gravity.y * Time.deltaTime;
+            if (_characterController.isGrounded)
             {
-                if (_jumpTimeCounter > 0 )
-                {
-                    _animator.SetBool("IsJumping", true);
-                    _moveDirection.y = _jumpForce;
+                _lastGroundedTime = Time.time;
+            }
 
-                    _jumpTimeCounter -= Time.deltaTime;
-                    Debug.LogWarning($"Time: {_jumpTimeCounter}");
-                }
-                else
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _jumpButtonPressedTime = Time.time;
+            }
+
+            if (Time.time - _lastGroundedTime <= _jumpButtonGracePeriod)
+            {
+                _characterController.stepOffset = _originalStepOffSet;
+
+                _animator.SetBool("IsGrounded", true);
+                _isGrounded = true;
+                _animator.SetBool("IsJumping", false);
+                _isJumping = false;
+                _animator.SetBool("IsFalling", false);
+
+                if (Time.time - _jumpButtonPressedTime <= _jumpButtonGracePeriod)
                 {
-                    _animator.SetBool("IsJumping", false);
+                    _moveDirection.y = _jumpForce;
+                    _animator.SetBool("IsJumping", true);
+                    _isJumping = true;
+                    _jumpButtonPressedTime = 0f;
+                    _lastGroundedTime = 0f;
                 }
             }
-            /*else  
+            else
             {
-                _animator.SetBool("IsJumping", false);
-            }*/
-        }
+                _characterController.stepOffset = 0;
+                _animator.SetBool("IsGrounded", false);
+                _isGrounded = false;
 
-        
+                if (_isJumping && _ySpeed < 0 || _ySpeed < -2)
+                {   
+                    _animator.SetBool("IsFalling", true);
+                }
+            }
+        }
 
         private void HandleCrouch()
         {
@@ -157,6 +163,6 @@ namespace Game.PlayersScripts
             if (!_characterController.isGrounded) _moveDirection.y -= _jumpGravity * Time.deltaTime;
             _characterController.Move(_moveDirection * Time.deltaTime);
         }
-        
+
     }
 }

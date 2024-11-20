@@ -1,3 +1,4 @@
+using System.IO;
 using Photon.Pun;
 using UnityEngine;
 using Utils;
@@ -7,13 +8,6 @@ namespace Game.PlayersScripts
     public class PlayerManager : EventListenerMono
     {
         [SerializeField] private PhotonView _photonView;
-
-        /*
-        private void Awake()
-        {
-            _photonView = GetComponent<PhotonView>();
-        }
-        */
 
         private void Start()
         {
@@ -25,7 +19,7 @@ namespace Game.PlayersScripts
 
         private void CreateController()
         {
-            // PhotonNetwork.Instantiate()
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerRobot"), Vector3.up * 1.1f, Quaternion.identity);
         }
 
 

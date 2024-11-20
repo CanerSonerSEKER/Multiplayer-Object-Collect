@@ -6,8 +6,8 @@ namespace Game.PlayersScripts
 {
     public class PlayerCam : MonoBehaviour
     {
-        [SerializeField] private Transform _playerTransform;
-        [SerializeField] private Transform _playerCamTransform;
+        [SerializeField] private Transform _cameraTransform;
+        [SerializeField] private Transform _cameraPivotPosition;
 
         private Vector3 _cameraFollowVelocity = Vector3.zero;
         private float _cameraFollowSpeed = 0.2f;
@@ -28,10 +28,10 @@ namespace Game.PlayersScripts
 
         private void FollowTarget()
         {
-            Vector3 targetPosition = Vector3.SmoothDamp(transform.position, _playerCamTransform.position,
+            Vector3 targetPosition = Vector3.SmoothDamp(_cameraTransform.position, _cameraPivotPosition.position,
                 ref _cameraFollowVelocity, _cameraFollowSpeed);
 
-            transform.position = targetPosition;
+            _cameraTransform.transform.position = targetPosition;
         }
 
         private void RotateCamera()
@@ -49,9 +49,8 @@ namespace Game.PlayersScripts
             rotation.y = _lookAngle;
             rotation.x = _pivotAngle;
             targetRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
-            transform.rotation = targetRotation;
-            _playerTransform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-            
+            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+            _cameraTransform.rotation = targetRotation;
             
         }
 
