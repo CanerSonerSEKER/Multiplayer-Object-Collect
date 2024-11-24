@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using Events;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
 
 namespace UI.MainMenu
@@ -12,7 +14,7 @@ namespace UI.MainMenu
         [SerializeField] private GameObject _findRoomPanel;
         [SerializeField] private GameObject _createRoomPanel;
         [SerializeField] private GameObject _inRoomPanel;
-         
+
         private void Start()
         {
             SetPanelActive(_mainMenuPanel);
@@ -69,7 +71,7 @@ namespace UI.MainMenu
         
         private void OnStartGameBTN()
         {
-            PhotonNetwork.LoadLevel(1);
+            Launcher.Instance.LoadScene();
         }
 
         protected override void UnRegisterEvents()

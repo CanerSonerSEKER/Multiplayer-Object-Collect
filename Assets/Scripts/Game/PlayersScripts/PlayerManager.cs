@@ -5,7 +5,7 @@ using Utils;
 
 namespace Game.PlayersScripts
 {
-    public class PlayerManager : EventListenerMono
+    public class PlayerManager : MonoBehaviourPunCallbacks
     {
         [SerializeField] private PhotonView _photonView;
 
@@ -22,14 +22,5 @@ namespace Game.PlayersScripts
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerRobot"), Vector3.up * 1.1f, Quaternion.identity);
         }
 
-
-        protected override void RegisterEvents()
-        {
-            
-        }
-
-        protected override void UnRegisterEvents()
-        {
-        }
     }
 }

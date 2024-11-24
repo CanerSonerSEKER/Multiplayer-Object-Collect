@@ -1,5 +1,4 @@
 using Events;
-using Photon.Pun;
 using Utils;
 
 namespace UI.MainMenu.Buttons

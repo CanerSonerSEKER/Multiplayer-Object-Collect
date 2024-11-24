@@ -4,7 +4,6 @@ using Photon.Realtime;
 using TMPro;
 using UI.MainMenu.Buttons;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace UI.MainMenu
@@ -33,22 +32,13 @@ namespace UI.MainMenu
 
         private void Start()
         {
-            Connect();
+            PhotonNetwork.GameVersion = _gameVersion;
+            PhotonNetwork.ConnectUsingSettings();
         }
 
-        private void Connect()
+        public void LoadScene()
         {
-            
-            if (PhotonNetwork.IsConnected)
-            {
-                //PhotonNetwork.JoinRoom();
-            }
-            else
-            {
-                PhotonNetwork.ConnectUsingSettings();
-                PhotonNetwork.GameVersion = _gameVersion;
-            }
-            
+            PhotonNetwork.LoadLevel(1);
         }
 
         public void LeaveRoom()
@@ -75,11 +65,11 @@ namespace UI.MainMenu
                 Destroy(child.gameObject);
             }
 
-            foreach (var player in players)
+            for (int i = 0; i < players.Length; i++)
             {
-                Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(player);
+                Instantiate(_playerListItemPrefab, _playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
             }
-            
+
             _startGameButton.SetActive(PhotonNetwork.IsMasterClient);
         }
 
@@ -108,7 +98,6 @@ namespace UI.MainMenu
         {
             Debug.Log("Lobiye girildi. ");
             PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
-            
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
