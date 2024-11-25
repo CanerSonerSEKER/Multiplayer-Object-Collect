@@ -476,7 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc88208f03a44bcc8e531f743fa78946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distance: 2
+  _distance: 1.2
   _height: 1.5
   _centerOffSet: {x: 0, y: 0, z: 0}
   _followOnStart: 0
