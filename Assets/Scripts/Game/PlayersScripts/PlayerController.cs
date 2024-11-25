@@ -52,16 +52,14 @@ namespace Game.PlayersScripts
         [Header("Animation Values")] 
         [SerializeField] private Animator _animator;
         
-        [Header("Camera Parameters")]
-        [SerializeField] private GameObject _cameraHolder;
-        [SerializeField] private GameObject _camera;
-        private Vector3 _cameraFollowVelocity = Vector3.zero;
-        private float _cameraFollowSpeed = 0.2f;
-        private float _lookAngle;
-        private float _pivotAngle;
-        private float _cameraTurnSpeed = 2f;
-        private float _minimumAngle = -35f;
-        private float _maximumAngle = 35f;
+        //[Header("Camera Parameters")]
+        //private Vector3 _cameraFollowVelocity = Vector3.zero;
+        //private float _cameraFollowSpeed = 0.2f;
+        //private float _lookAngle;
+        //private float _pivotAngle;
+        //private float _cameraTurnSpeed = 2f;
+        //private float _minimumAngle = -35f;
+        //private float _maximumAngle = 35f;
 
 
         private void Awake()
@@ -72,8 +70,19 @@ namespace Game.PlayersScripts
 
         private void Start()
         {
-            if (_photonView.IsMine) return;
-            Destroy(GetComponentInChildren<Camera>().gameObject);
+            CameraWork cameraWork = gameObject.GetComponent<CameraWork>();
+
+            if (cameraWork != null)
+            {
+                if (_photonView.IsMine)
+                {
+                    cameraWork.OnStartFollowing();
+                }
+            }
+            else
+            {
+                Debug.LogError("<Color = Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
+            }
         }
 
         private void Update()
@@ -104,8 +113,8 @@ namespace Game.PlayersScripts
 
         private void LateUpdate()
         {
-            FollowTarget();
-            RotateCamera();
+            //FollowTarget();
+            //RotateCamera();
         }
 
         private void HandleMovementInput()
@@ -201,21 +210,20 @@ namespace Game.PlayersScripts
         
         private void RotateCamera()
         {
-            float inputMouseY = Input.GetAxis("Mouse Y");
-            float inputMouseX = Input.GetAxis("Mouse X");
-
-            Vector3 rotation;
-            Quaternion targetRotation;
-
-            _lookAngle = _lookAngle + (inputMouseX * _cameraTurnSpeed);
-            _pivotAngle = _pivotAngle - (inputMouseY * _cameraTurnSpeed);
-            _pivotAngle = Mathf.Clamp(_pivotAngle, _minimumAngle, _maximumAngle);
-
-            rotation.x = _pivotAngle;
-            rotation.y = _lookAngle;
-            targetRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
-            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-            _camera.transform.rotation = targetRotation;
+            //float inputMouseY = Input.GetAxis("Mouse Y");
+            //float inputMouseX = Input.GetAxis("Mouse X");
+            //
+            //Vector3 rotation;
+            //Quaternion targetRotation;
+            //
+            //_lookAngle = _lookAngle + (inputMouseX * _cameraTurnSpeed);
+            //_pivotAngle = _pivotAngle - (inputMouseY * _cameraTurnSpeed);
+            //_pivotAngle = Mathf.Clamp(_pivotAngle, _minimumAngle, _maximumAngle);
+            //
+            //rotation.x = _pivotAngle;
+            //rotation.y = _lookAngle;
+            //targetRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
+            //transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 
         }
 
