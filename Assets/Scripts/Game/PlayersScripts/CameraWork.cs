@@ -19,6 +19,9 @@ namespace Game.PlayersScripts
         private Vector3 _cameraOffSet = Vector3.zero;
         private float _lookAngle;
         private float _pivotAngle;
+        private float _minPivotAngle = -35f;
+        private float _maxPivotAngle = 35f;
+        private float _cameraRotateSpeed = 2f;
 
 
         private void Start()
@@ -77,10 +80,10 @@ namespace Game.PlayersScripts
             float inputY = Input.GetAxis("Mouse Y");
 
             Vector3 rotation;
-            
-            _lookAngle = _lookAngle + (inputX * 2f);
+
+            _lookAngle = _lookAngle + (inputX * _cameraRotateSpeed);
             _pivotAngle = _pivotAngle - (inputY * 2f);
-            _pivotAngle = Mathf.Clamp(_pivotAngle, -35f, 35f);
+            _pivotAngle = Mathf.Clamp(_pivotAngle, _minPivotAngle, _maxPivotAngle);
             
             rotation.x = _pivotAngle;
             rotation.y = _lookAngle;
