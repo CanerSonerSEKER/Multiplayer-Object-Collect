@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Photon.Pun;
-using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using TMPro;
 using UI.MainMenu.Buttons;
@@ -40,6 +39,7 @@ namespace UI.MainMenu
         public void LoadScene()
         {
             PhotonNetwork.LoadLevel(1);
+            PhotonNetwork.CurrentRoom.IsVisible = false;
         }
 
         public void LeaveRoom()

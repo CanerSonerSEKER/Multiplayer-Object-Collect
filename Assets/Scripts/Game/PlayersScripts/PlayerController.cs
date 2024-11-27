@@ -52,16 +52,6 @@ namespace Game.PlayersScripts
         [Header("Animation Values")] 
         [SerializeField] private Animator _animator;
         
-        //[Header("Camera Parameters")]
-        //private Vector3 _cameraFollowVelocity = Vector3.zero;
-        //private float _cameraFollowSpeed = 0.2f;
-        //private float _lookAngle;
-        //private float _pivotAngle;
-        //private float _cameraTurnSpeed = 2f;
-        //private float _minimumAngle = -35f;
-        //private float _maximumAngle = 35f;
-
-
         private void Awake()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -111,12 +101,6 @@ namespace Game.PlayersScripts
             }
         }
 
-        private void LateUpdate()
-        {
-            //FollowTarget();
-            //RotateCamera();
-        }
-
         private void HandleMovementInput()
         {
             _currentInput =
@@ -139,6 +123,7 @@ namespace Game.PlayersScripts
         private void HandleJump()
         {
             _ySpeed += Physics.gravity.y * Time.deltaTime;
+            
             if (_characterController.isGrounded)
             {
                 _lastGroundedTime = Time.time;
@@ -202,31 +187,6 @@ namespace Game.PlayersScripts
             if (!_characterController.isGrounded) _moveDirection.y -= _jumpGravity * Time.deltaTime;
             _characterController.Move(_moveDirection * Time.deltaTime);
         }
-        
-        private void FollowTarget()
-        {
-            
-        }
-        
-        private void RotateCamera()
-        {
-            //float inputMouseY = Input.GetAxis("Mouse Y");
-            //float inputMouseX = Input.GetAxis("Mouse X");
-            //
-            //Vector3 rotation;
-            //Quaternion targetRotation;
-            //
-            //_lookAngle = _lookAngle + (inputMouseX * _cameraTurnSpeed);
-            //_pivotAngle = _pivotAngle - (inputMouseY * _cameraTurnSpeed);
-            //_pivotAngle = Mathf.Clamp(_pivotAngle, _minimumAngle, _maximumAngle);
-            //
-            //rotation.x = _pivotAngle;
-            //rotation.y = _lookAngle;
-            //targetRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
-            //transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-
-        }
-
 
     }
 }

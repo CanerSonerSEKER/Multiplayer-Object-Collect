@@ -40,6 +40,8 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - ReduceTime
+  - DisplayTime
+  - ReduceStartingTime
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 0

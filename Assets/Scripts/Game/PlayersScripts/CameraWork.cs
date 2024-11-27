@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Game.PlayersScripts
 {
@@ -90,7 +88,6 @@ namespace Game.PlayersScripts
             
             _cameraTransform.rotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
             transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-
 
         }
 
