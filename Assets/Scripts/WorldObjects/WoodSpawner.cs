@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace WorldObjects
 {
-    public class WoodSpawner : MonoBehaviour
+    public class WoodSpawner : MonoBehaviourPunCallbacks
     {
         [SerializeField] private Vector2Int _terrainSize;
         [SerializeField] private List<Wood> _woods;
@@ -15,13 +19,25 @@ namespace WorldObjects
         [SerializeField] private GameObject _woodPrefab;
         [SerializeField] private float _spawnOffSetY = 0.1f;
 
+        private PhotonView _photonView;
+
         private void Awake()
         {
-            SpawnAllWoods();
+            _photonView = GetComponent<PhotonView>();
+            
+            //SpawnAllWoods();
 
+            //_coroutine = StartCoroutine(SpawnRoutine());
+        }
+
+        private void Start()
+        {
+            _photonView.RPC(nameof(SpawnAllWoods), RpcTarget.AllBuffered);
+            
             _coroutine = StartCoroutine(SpawnRoutine());
         }
 
+        [PunRPC]
         private void SpawnAllWoods()
         {
             _woods = new List<Wood>();
@@ -39,9 +55,8 @@ namespace WorldObjects
 
             Vector3 newWoodPos = new Vector3(randX, _spawnOffSetY, randZ);
 
-            GameObject newWoodGo = Instantiate(_woodPrefab, transform);
+            GameObject newWoodGo = PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs", "WoodBox"), newWoodPos, Quaternion.identity, 0);
 
-            newWoodGo.transform.localPosition = newWoodPos;
             Wood newWood = newWoodGo.GetComponent<Wood>();
             
             _woods.Add(newWood);
@@ -54,7 +69,7 @@ namespace WorldObjects
             Debug.LogWarning($"SpawnerPreRemove : {pickedWood}");
             pickedWood.Pickable -= OnPickable;
             _woods.Remove(pickedWood);
-            Destroy(pickedWood.gameObject);
+            PhotonNetwork.Destroy(pickedWood.gameObject);
 
         }
         
@@ -70,6 +85,5 @@ namespace WorldObjects
                 yield return new WaitForSeconds(_woodSpawnFreq);
             }
         }
-
     }
 }
