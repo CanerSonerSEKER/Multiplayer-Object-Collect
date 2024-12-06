@@ -1,7 +1,6 @@
 using System.IO;
 using Photon.Pun;
 using UnityEngine;
-using Utils;
 
 namespace Game.PlayersScripts
 {
@@ -19,7 +18,7 @@ namespace Game.PlayersScripts
 
         private void CreateController()
         {
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerRobot"), Vector3.up * 1.1f, Quaternion.identity);
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerRobot"), Vector3.up * 0.1f, Quaternion.identity);
         }
 
     }

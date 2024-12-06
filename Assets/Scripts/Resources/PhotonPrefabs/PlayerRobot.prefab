@@ -218,7 +218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.08
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -226,7 +226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 4.86
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -259,6 +259,10 @@ PrefabInstance:
     - target: {fileID: 400100, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400100, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.14
       objectReference: {fileID: 0}
     - target: {fileID: 400100, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -465,7 +469,7 @@ MonoBehaviour:
   _crouchSpeed: 0.25
   _jumpForce: 8
   _jumpGravity: 30
-  _jumpButtonGracePeriod: 0
+  _jumpButtonGracePeriod: 1
   _animator: {fileID: 6962554866421927672}
 --- !u!114 &3873132437952384906
 MonoBehaviour:

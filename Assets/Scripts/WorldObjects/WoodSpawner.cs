@@ -32,7 +32,7 @@ namespace WorldObjects
 
         private void Start()
         {
-            _photonView.RPC(nameof(SpawnAllWoods), RpcTarget.AllBuffered);
+            _photonView.RPC(nameof(SpawnAllWoods), RpcTarget.MasterClient);
             
             _coroutine = StartCoroutine(SpawnRoutine());
         }
@@ -41,6 +41,8 @@ namespace WorldObjects
         private void SpawnAllWoods()
         {
             _woods = new List<Wood>();
+
+            if (!_photonView.IsMine) return;
 
             for (int i = 0; i < _initWoodCount; i++)
             {
@@ -55,7 +57,7 @@ namespace WorldObjects
 
             Vector3 newWoodPos = new Vector3(randX, _spawnOffSetY, randZ);
 
-            GameObject newWoodGo = PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs", "WoodBox"), newWoodPos, Quaternion.identity, 0);
+            GameObject newWoodGo = PhotonNetwork.InstantiateRoomObject(Path.Combine("PhotonPrefabs", "WoodBox"), newWoodPos, Quaternion.identity);
 
             Wood newWood = newWoodGo.GetComponent<Wood>();
             
