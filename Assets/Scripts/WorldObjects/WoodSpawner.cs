@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Photon.Pun;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,7 +10,7 @@ namespace WorldObjects
     public class WoodSpawner : MonoBehaviourPunCallbacks
     {
         [SerializeField] private Vector2Int _terrainSize;
-        [SerializeField] private List<Wood> _woods;
+        [SerializeField] private List<Wood> _woods = new List<Wood>();
         [SerializeField] private int _initWoodCount = 50;
         [SerializeField] private float _woodSpawnFreq = 1f;
         [SerializeField] private Coroutine _coroutine;
@@ -25,22 +23,22 @@ namespace WorldObjects
         {
             _photonView = GetComponent<PhotonView>();
             
-            //SpawnAllWoods();
+            SpawnAllWoods();
 
-            //_coroutine = StartCoroutine(SpawnRoutine());
+            _coroutine = StartCoroutine(SpawnRoutine());
         }
 
         private void Start()
         {
-            _photonView.RPC(nameof(SpawnAllWoods), RpcTarget.MasterClient);
+            //_photonView.RPC(nameof(SpawnAllWoods), RpcTarget.MasterClient);
             
-            _coroutine = StartCoroutine(SpawnRoutine());
+            //if (PhotonNetwork.IsMasterClient ==  false) return;
+
         }
 
-        [PunRPC]
         private void SpawnAllWoods()
         {
-            _woods = new List<Wood>();
+            //_woods = new List<Wood>();
 
             if (!_photonView.IsMine) return;
 
