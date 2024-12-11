@@ -6,5 +6,6 @@ namespace Events
     public static class GameEvents
     {
         public static UnityAction<Wood> WoodCollision;
+        
     }
 }

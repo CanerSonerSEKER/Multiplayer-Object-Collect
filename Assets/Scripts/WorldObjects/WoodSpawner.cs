@@ -17,31 +17,19 @@ namespace WorldObjects
         [SerializeField] private GameObject _woodPrefab;
         [SerializeField] private float _spawnOffSetY = 0.1f;
 
-        private PhotonView _photonView;
+        //private PhotonView _photonView;
 
         private void Awake()
         {
-            _photonView = GetComponent<PhotonView>();
+            //_photonView = GetComponent<PhotonView>();
             
             SpawnAllWoods();
 
             _coroutine = StartCoroutine(SpawnRoutine());
         }
 
-        private void Start()
-        {
-            //_photonView.RPC(nameof(SpawnAllWoods), RpcTarget.MasterClient);
-            
-            //if (PhotonNetwork.IsMasterClient ==  false) return;
-
-        }
-
         private void SpawnAllWoods()
         {
-            //_woods = new List<Wood>();
-
-            if (!_photonView.IsMine) return;
-
             for (int i = 0; i < _initWoodCount; i++)
             {
                 SpawnRandWoods();
