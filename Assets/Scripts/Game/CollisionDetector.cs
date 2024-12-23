@@ -1,6 +1,5 @@
-using System;
 using Events;
-using Photon.Pun;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Utils;
 using WorldObjects;
@@ -9,28 +8,32 @@ namespace Game
 {
     public class CollisionDetector : EventListenerMono
     {
-        //[SerializeField] private GameObject _playerController;
         [SerializeField] private GameObject _boxOnBack;
         private bool _isPicked = true;
-
-        //private PhotonView _photonView;
-
-
-        /*private void Awake()
-        {
-            _photonView = GetComponent<PhotonView>();
-        }*/
 
         private void OnWoodCollision(Wood colWood)
         {
             Debug.LogWarning($"Colwood : {colWood}");
-            //_photonView.RPC("BackOnBox", RpcTarget.MasterClient);
             _boxOnBack.SetActive(true);
         }
-
         
+        private void OnBaseCollision(Base colBase)
+        {
+            Debug.LogWarning($"Base Trigger");
+            _boxOnBack.SetActive(false);
+            
+        }
+
         private void OnTriggerEnter(Collider player)
         {
+
+            if (player.TryGetComponent(out Base colBase) && _isPicked)
+            {
+                GameEvents.BaseCollision?.Invoke(colBase);
+                colBase.OnGiven();
+                _isPicked = false;
+            }
+            
             if (player.TryGetComponent(out Wood colWood) && _isPicked)
             {
                 GameEvents.WoodCollision?.Invoke(colWood);
@@ -43,20 +46,16 @@ namespace Game
             }
         }
 
-        /*[PunRPC]
-        private void BackOnBox()
-        {
-            _boxOnBack.SetActive(true);
-        }*/
-
         protected override void RegisterEvents()
         {
             GameEvents.WoodCollision += OnWoodCollision;
+            GameEvents.BaseCollision += OnBaseCollision;
         }
 
         protected override void UnRegisterEvents()
         {
             GameEvents.WoodCollision -= OnWoodCollision;
+            GameEvents.BaseCollision -= OnBaseCollision;
         }
     }
 }

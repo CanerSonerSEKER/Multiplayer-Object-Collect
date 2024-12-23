@@ -17,11 +17,9 @@ namespace WorldObjects
         [SerializeField] private GameObject _woodPrefab;
         [SerializeField] private float _spawnOffSetY = 0.1f;
 
-        //private PhotonView _photonView;
 
         private void Awake()
         {
-            //_photonView = GetComponent<PhotonView>();
             
             SpawnAllWoods();
 
